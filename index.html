@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI 實戰開發 5 步心法｜無本自動化開發思維</title>
+  <meta name="description" content="不背死板提示詞，從日常偷懶需求出發，透過與 AI 持續對話、反覆實測與人類最終把關，打造零成本數位作品的實戰開發流程。" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-base: #06070a;
+      --bg-surface: rgba(17, 19, 26, 0.72);
+      --bg-surface-hover: rgba(24, 28, 38, 0.88);
+      --border-light: rgba(255, 255, 255, 0.08);
+      --border-glow: rgba(56, 189, 248, 0.45);
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --cyan: #38bdf8;
+      --indigo: #818cf8;
+      --emerald: #34d399;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-base);
+      color: var(--text-primary);
+      font-family: 'Inter', 'Noto Sans TC', -apple-system, BlinkMacSystemFont, sans-serif;
+      line-height: 1.75;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* 背景精緻網格與環境光暈 */
+    .bg-grid {
+      position: fixed;
+      inset: 0;
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+      background-size: 48px 48px;
+      mask-image: radial-gradient(ellipse 80% 65% at 50% 15%, #000 40%, transparent 100%);
+      -webkit-mask-image: radial-gradient(ellipse 80% 65% at 50% 15%, #000 40%, transparent 100%);
+      pointer-events: none;
+      z-index: -2;
+    }
+
+    .ambient-light {
+      position: fixed;
+      top: -180px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 780px;
+      height: 460px;
+      background: radial-gradient(circle, rgba(56, 189, 248, 0.16) 0%, rgba(129, 140, 248, 0.08) 45%, transparent 75%);
+      filter: blur(60px);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .container {
+      max-width: 880px;
+      margin: 0 auto;
+      padding: 72px 24px 96px;
+    }
+
+    /* 頂部導覽列 */
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 56px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      letter-spacing: 0.04em;
+      color: var(--text-primary);
+    }
+
+    .brand-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--cyan);
+      box-shadow: 0 0 12px var(--cyan);
+    }
+
+    .copy-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-light);
+      color: var(--text-secondary);
+      padding: 7px 14px;
+      border-radius: 8px;
+      font-size: 0.84rem;
+      font-family: inherit;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .copy-btn:hover {
+      background: rgba(56, 189, 248, 0.12);
+      border-color: var(--border-glow);
+      color: var(--text-primary);
+    }
+
+    /* 主視覺標題區 */
+    header {
+      text-align: center;
+      margin-bottom: 68px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--cyan);
+      background: rgba(56, 189, 248, 0.08);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      margin-bottom: 22px;
+      box-shadow: 0 4px 20px rgba(56, 189, 248, 0.08);
+    }
+
+    h1 {
+      font-size: clamp(2.1rem, 4.8vw, 3.1rem);
+      font-weight: 900;
+      line-height: 1.25;
+      letter-spacing: -0.02em;
+      margin-bottom: 20px;
+      background: linear-gradient(135deg, #ffffff 25%, #cbd5e1 65%, #38bdf8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .subtitle {
+      max-width: 640px;
+      margin: 0 auto;
+      font-size: 1.08rem;
+      color: var(--text-secondary);
+      font-weight: 400;
+    }
+
+    /* 步驟時間軸容器 */
+    .timeline {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .timeline::before {
+      content: "";
+      position: absolute;
+      left: 39px;
+      top: 32px;
+      bottom: 32px;
+      width: 2px;
+      background: linear-gradient(180deg, rgba(56, 189, 248, 0.45) 0%, rgba(129, 140, 248, 0.25) 65%, rgba(52, 211, 153, 0.4) 100%);
+      z-index: 0;
+    }
+
+    .step-card {
+      position: relative;
+      z-index: 1;
+      background: var(--bg-surface);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid var(--border-light);
+      border-radius: 20px;
+      padding: 30px 32px;
+      display: flex;
+      gap: 26px;
+      align-items: flex-start;
+      box-shadow: 0 12px 32px -12px rgba(0, 0, 0, 0.65);
+      transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.28s ease, background-color 0.28s ease, box-shadow 0.28s ease;
+    }
+
+    .step-card:hover {
+      transform: translateY(-3px);
+      background: var(--bg-surface-hover);
+      border-color: var(--border-glow);
+      box-shadow: 0 20px 40px -15px rgba(56, 189, 248, 0.14);
+    }
+
+    /* 第 4 步重點強調樣式 */
+    .step-card.featured {
+      background: linear-gradient(145deg, rgba(20, 26, 38, 0.9) 0%, rgba(15, 19, 28, 0.85) 100%);
+      border: 1px solid rgba(56, 189, 248, 0.38);
+      box-shadow: 0 14px 36px -10px rgba(56, 189, 248, 0.16);
+    }
+
+    .step-badge {
+      flex-shrink: 0;
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      background: #0d111a;
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      color: var(--cyan);
+      font-weight: 800;
+      font-size: 1.05rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: inset 0 0 14px rgba(56, 189, 248, 0.12), 0 4px 12px rgba(0, 0, 0, 0.4);
+    }
+
+    .step-card.featured .step-badge {
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.22), rgba(129, 140, 248, 0.22));
+      border-color: var(--cyan);
+      color: #ffffff;
+    }
+
+    .step-body {
+      flex: 1;
+    }
+
+    .step-tag {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      color: var(--indigo);
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .step-card.featured .step-tag {
+      color: var(--emerald);
+    }
+
+    .step-body h2 {
+      font-size: 1.26rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 10px;
+      letter-spacing: -0.01em;
+    }
+
+    .step-body p {
+      color: var(--text-secondary);
+      font-size: 0.98rem;
+    }
+
+    .highlight-text {
+      color: #e2e8f0;
+      font-weight: 600;
+      background: linear-gradient(180deg, transparent 62%, rgba(56, 189, 248, 0.22) 62%);
+      padding: 0 3px;
+    }
+
+    /* 核心心法 2x2 網格區 */
+    .principles-section {
+      margin-top: 64px;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    .section-header h3 {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--text-primary);
+      margin-bottom: 6px;
+    }
+
+    .section-header p {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+    }
+
+    .principles-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+    }
+
+    .principle-item {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-light);
+      border-radius: 16px;
+      padding: 22px 24px;
+      transition: border-color 0.25s ease, transform 0.25s ease;
+    }
+
+    .principle-item:hover {
+      border-color: rgba(129, 140, 248, 0.4);
+      transform: translateY(-2px);
+    }
+
+    .principle-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 1.02rem;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+
+    .principle-icon {
+      color: var(--cyan);
+      font-size: 1.1rem;
+    }
+
+    .principle-item p {
+      font-size: 0.92rem;
+      color: var(--text-secondary);
+      line-height: 1.65;
+    }
+
+    /* 頁尾 */
+    footer {
+      margin-top: 72px;
+      padding-top: 28px;
+      border-top: 1px solid var(--border-light);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      color: var(--text-muted);
+      font-size: 0.86rem;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      color: var(--emerald);
+      font-weight: 500;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--emerald);
+      box-shadow: 0 0 8px var(--emerald);
+    }
+
+    @media (max-width: 680px) {
+      .container {
+        padding: 44px 18px 64px;
+      }
+      .timeline::before {
+        display: none;
+      }
+      .step-card {
+        flex-direction: column;
+        gap: 16px;
+        padding: 24px 22px;
+      }
+      .principles-grid {
+        grid-template-columns: 1fr;
+      }
+      footer {
+        flex-direction: column;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-grid"></div>
+  <div class="ambient-light"></div>
+
+  <div class="container">
+    <nav class="topbar">
+      <div class="brand">
+        <span class="brand-dot"></span>
+        <span>AI PRACTICAL PLAYBOOK</span>
+      </div>
+      <button class="copy-btn" id="copyBtn" onclick="copyWorkflow()">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        <span id="copyText">複製心法摘要</span>
+      </button>
+    </nav>
+
+    <header>
+      <div class="pill">✦ Zero-Cost Digital Builder</div>
+      <h1>AI 實戰開發 5 步心法</h1>
+      <p class="subtitle">不背死板的提示詞公式，從日常「想偷懶」的真實痛點出發，透過高頻對話與人類最終把關，把想法變成穩定運作的數位作品。</p>
+    </header>
+
+    <main class="timeline">
+      <article class="step-card">
+        <div class="step-badge">01</div>
+        <div class="step-body">
+          <span class="step-tag">Step 01 · Inspiration</span>
+          <h2>靈感探索：從日常「偷懶」找題目</h2>
+          <p>不要憑空硬想大題目，最好的點子都藏在食衣住行育樂的細節裡。問自己一個問題：<span class="highlight-text">「生活或工作中有哪件事讓我覺得很麻煩、很想偷懶？」</span>只要有想省事的念頭，就有源源不絕的作品靈感。</p>
+        </div>
+      </article>
+
+      <article class="step-card">
+        <div class="step-badge">02</div>
+        <div class="step-body">
+          <span class="step-tag">Step 02 · Co-Creation</span>
+          <h2>腦力激盪：把 AI 當成隨時在線的夥伴</h2>
+          <p>不管想法可不可行，先丟出來跟 AI 討論就對了。沒有所謂「唯一正確的提示詞」，<span class="highlight-text">溝通的本質就是聊天</span>——透過一來一往的對話、不斷修正方向，把腦中模糊的念頭逐步拆解成具體的執行步驟。</p>
+        </div>
+      </article>
+
+      <article class="step-card">
+        <div class="step-badge">03</div>
+        <div class="step-body">
+          <span class="step-tag">Step 03 · Rapid Execution</span>
+          <h2>快速實作：遇到卡關立刻發問</h2>
+          <p>動手製作的過程中，只要遇到任何報錯、邏輯卡住或不懂的地方，<span class="highlight-text">不要自己埋頭苦幹浪費時間</span>，馬上把問題丟給 AI 一起找解法，把精力集中在核心功能的推進上。</p>
+        </div>
+      </article>
+
+      <article class="step-card featured">
+        <div class="step-badge">04</div>
+        <div class="step-body">
+          <span class="step-tag">★ Critical Gate · Human Verification</span>
+          <h2>反覆測試與人類把關（最關鍵一步）</h2>
+          <p>AI 只是輔助工具，絕對不能完全盲信。成品做出來後，必須透過反覆實驗與模擬操作，由<span class="highlight-text">自己親自實際檢查過每一個環節</span>，確認流程順暢、沒有明顯漏洞，才算真正準備好上架。</p>
+        </div>
+      </article>
+
+      <article class="step-card">
+        <div class="step-badge">05</div>
+        <div class="step-body">
+          <span class="step-tag">Step 05 · Agile Launch</span>
+          <h2>敏捷上線與持續優化</h2>
+          <p>測試確認沒問題後，就大膽把作品推上戰場接受市場檢驗。真實環境中難免會遇到預期外的狀況，只要具備隨時發現問題、<span class="highlight-text">與 AI 協作排除障礙的能力</span>，就能讓作品在實戰中越改越穩。</p>
+        </div>
+      </article>
+    </main>
+
+    <section class="principles-section">
+      <div class="section-header">
+        <h3>核心執行原則</h3>
+        <p>支撐零成本開發的四個底層思維</p>
+      </div>
+      <div class="principles-grid">
+        <div class="principle-item">
+          <div class="principle-title">
+            <span class="principle-icon">◈</span>
+            <span>痛點即商機</span>
+          </div>
+          <p>世上想省時間的人很多，先解決自己日常覺得麻煩的小事，就能解決多數人的痛點。</p>
+        </div>
+        <div class="principle-item">
+          <div class="principle-title">
+            <span class="principle-icon">◈</span>
+            <span>對話勝於背誦</span>
+          </div>
+          <p>提示詞不是死背的咒語，而是透過多輪對話持續微調、修正方向的過程。</p>
+        </div>
+        <div class="principle-item">
+          <div class="principle-title">
+            <span class="principle-icon">◈</span>
+            <span>零內耗除錯</span>
+          </div>
+          <p>遇到技術障礙立刻與 AI 討論，不白白浪費時間卡關，保持開發節奏流暢。</p>
+        </div>
+        <div class="principle-item">
+          <div class="principle-title">
+            <span class="principle-icon">◈</span>
+            <span>人類負全責</span>
+          </div>
+          <p>AI 負責加速產出，最終品質與細節必須由開發者親自實測驗證才能交付。</p>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="status-pill">
+        <span class="status-dot"></span>
+        <span>實戰驗證流程 · 持續迭代中</span>
+      </div>
+      <div>Built with AI Collaboration</div>
+    </footer>
+  </div>
+
+  <script>
+    function copyWorkflow() {
+      const text = `【AI 實戰開發 5 步心法】
+01. 靈感探索：從食衣住行育樂「想偷懶」的地方找題目
+02. 腦力激盪：不背提示詞，把 AI 當夥伴透過聊天持續修正
+03. 快速實作：遇到卡關或報錯立刻發問，不白白浪費時間
+04. 反覆測試與把關：AI 只是輔助，成品一定要親自檢查過才能上架
+05. 敏捷上線與優化：大膽推上戰場，遇到狀況隨時協作排除障礙`;
+
+      navigator.clipboard.writeText(text).then(() => {
+        const label = document.getElementById('copyText');
+        label.textContent = '已複製到剪貼簿 ✓';
+        setTimeout(() => {
+          label.textContent = '複製心法摘要';
+        }, 2000);
+      });
+    }
+  </script>
+</body>
+</html>
