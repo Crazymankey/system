@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AI 實戰開發 5 步心法｜無本自動化開發思維</title>
+  <title>AI 實戰開發 5 步心法｜從生活靈感到作品上線</title>
   <meta name="description" content="不背死板提示詞，從日常偷懶需求出發，透過與 AI 持續對話、反覆實測與人類最終把關，打造零成本數位作品的實戰開發流程。" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -38,7 +38,6 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* 背景精緻網格與環境光暈 */
     .bg-grid {
       position: fixed;
       inset: 0;
@@ -71,7 +70,6 @@
       padding: 72px 24px 96px;
     }
 
-    /* 頂部導覽列 */
     .topbar {
       display: flex;
       justify-content: space-between;
@@ -120,7 +118,6 @@
       color: var(--text-primary);
     }
 
-    /* 主視覺標題區 */
     header {
       text-align: center;
       margin-bottom: 68px;
@@ -132,10 +129,9 @@
       gap: 8px;
       padding: 6px 16px;
       border-radius: 999px;
-      font-size: 0.8rem;
+      font-size: 0.82rem;
       font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
+      letter-spacing: 0.06em;
       color: var(--cyan);
       background: rgba(56, 189, 248, 0.08);
       border: 1px solid rgba(56, 189, 248, 0.25);
@@ -162,7 +158,6 @@
       font-weight: 400;
     }
 
-    /* 步驟時間軸容器 */
     .timeline {
       position: relative;
       display: flex;
@@ -204,7 +199,6 @@
       box-shadow: 0 20px 40px -15px rgba(56, 189, 248, 0.14);
     }
 
-    /* 第 4 步重點強調樣式 */
     .step-card.featured {
       background: linear-gradient(145deg, rgba(20, 26, 38, 0.9) 0%, rgba(15, 19, 28, 0.85) 100%);
       border: 1px solid rgba(56, 189, 248, 0.38);
@@ -239,11 +233,10 @@
 
     .step-tag {
       display: inline-block;
-      font-size: 0.75rem;
+      font-size: 0.78rem;
       font-weight: 700;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.04em;
       color: var(--indigo);
-      text-transform: uppercase;
       margin-bottom: 4px;
     }
 
@@ -271,7 +264,6 @@
       padding: 0 3px;
     }
 
-    /* 核心心法 2x2 網格區 */
     .principles-section {
       margin-top: 64px;
     }
@@ -333,7 +325,6 @@
       line-height: 1.65;
     }
 
-    /* 頁尾 */
     footer {
       margin-top: 72px;
       padding-top: 28px;
@@ -344,13 +335,13 @@
       flex-wrap: wrap;
       gap: 12px;
       color: var(--text-muted);
-      font-size: 0.86rem;
+      font-size: 0.88rem;
     }
 
     .status-pill {
       display: inline-flex;
       align-items: center;
-      gap: 7px;
+      gap: 8px;
       color: var(--emerald);
       font-weight: 500;
     }
@@ -393,7 +384,7 @@
     <nav class="topbar">
       <div class="brand">
         <span class="brand-dot"></span>
-        <span>AI PRACTICAL PLAYBOOK</span>
+        <span>AI 實戰開發指南</span>
       </div>
       <button class="copy-btn" id="copyBtn" onclick="copyWorkflow()">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
@@ -402,7 +393,7 @@
     </nav>
 
     <header>
-      <div class="pill">✦ Zero-Cost Digital Builder</div>
+      <div class="pill">✦ 新手友善 · 無本開發思維</div>
       <h1>AI 實戰開發 5 步心法</h1>
       <p class="subtitle">不背死板的提示詞公式，從日常「想偷懶」的真實痛點出發，透過高頻對話與人類最終把關，把想法變成穩定運作的數位作品。</p>
     </header>
@@ -411,7 +402,7 @@
       <article class="step-card">
         <div class="step-badge">01</div>
         <div class="step-body">
-          <span class="step-tag">Step 01 · Inspiration</span>
+          <span class="step-tag">第一步 · 找靈感</span>
           <h2>靈感探索：從日常「偷懶」找題目</h2>
           <p>不要憑空硬想大題目，最好的點子都藏在食衣住行育樂的細節裡。問自己一個問題：<span class="highlight-text">「生活或工作中有哪件事讓我覺得很麻煩、很想偷懶？」</span>只要有想省事的念頭，就有源源不絕的作品靈感。</p>
         </div>
@@ -420,7 +411,7 @@
       <article class="step-card">
         <div class="step-badge">02</div>
         <div class="step-body">
-          <span class="step-tag">Step 02 · Co-Creation</span>
+          <span class="step-tag">第二步 · 聊方向</span>
           <h2>腦力激盪：把 AI 當成隨時在線的夥伴</h2>
           <p>不管想法可不可行，先丟出來跟 AI 討論就對了。沒有所謂「唯一正確的提示詞」，<span class="highlight-text">溝通的本質就是聊天</span>——透過一來一往的對話、不斷修正方向，把腦中模糊的念頭逐步拆解成具體的執行步驟。</p>
         </div>
@@ -429,7 +420,7 @@
       <article class="step-card">
         <div class="step-badge">03</div>
         <div class="step-body">
-          <span class="step-tag">Step 03 · Rapid Execution</span>
+          <span class="step-tag">第三步 · 動手做</span>
           <h2>快速實作：遇到卡關立刻發問</h2>
           <p>動手製作的過程中，只要遇到任何報錯、邏輯卡住或不懂的地方，<span class="highlight-text">不要自己埋頭苦幹浪費時間</span>，馬上把問題丟給 AI 一起找解法，把精力集中在核心功能的推進上。</p>
         </div>
@@ -438,7 +429,7 @@
       <article class="step-card featured">
         <div class="step-badge">04</div>
         <div class="step-body">
-          <span class="step-tag">★ Critical Gate · Human Verification</span>
+          <span class="step-tag">★ 最關鍵一步 · 親自把關</span>
           <h2>反覆測試與人類把關（最關鍵一步）</h2>
           <p>AI 只是輔助工具，絕對不能完全盲信。成品做出來後，必須透過反覆實驗與模擬操作，由<span class="highlight-text">自己親自實際檢查過每一個環節</span>，確認流程順暢、沒有明顯漏洞，才算真正準備好上架。</p>
         </div>
@@ -447,7 +438,7 @@
       <article class="step-card">
         <div class="step-badge">05</div>
         <div class="step-body">
-          <span class="step-tag">Step 05 · Agile Launch</span>
+          <span class="step-tag">第五步 · 推上線</span>
           <h2>敏捷上線與持續優化</h2>
           <p>測試確認沒問題後，就大膽把作品推上戰場接受市場檢驗。真實環境中難免會遇到預期外的狀況，只要具備隨時發現問題、<span class="highlight-text">與 AI 協作排除障礙的能力</span>，就能讓作品在實戰中越改越穩。</p>
         </div>
@@ -494,9 +485,9 @@
     <footer>
       <div class="status-pill">
         <span class="status-dot"></span>
-        <span>實戰驗證流程 · 持續迭代中</span>
+        <span>不講空泛理論 · 每一步都經過實際測試</span>
       </div>
-      <div>Built with AI Collaboration</div>
+      <div>透過 AI 協作打造 · 持續更新中</div>
     </footer>
   </div>
 
