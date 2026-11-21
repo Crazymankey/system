@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Claude 零爆倉狂刷作戰攻略｜2小時極速開發 SOP</title>
+  <title>Claude 零爆倉狂刷作戰攻略｜2小時極速開發 SOP（防秒爆補丁版）</title>
   <style>
     :root {
       --bg-color: #0f172a;
@@ -16,6 +16,7 @@
       --success: #10b981;
       --warning: #f59e0b;
       --danger: #ef4444;
+      --danger-glow: rgba(239, 68, 68, 0.14);
     }
 
     * {
@@ -41,7 +42,7 @@
     header {
       text-align: center;
       padding: 32px 16px;
-      margin-bottom: 32px;
+      margin-bottom: 24px;
       background: linear-gradient(145deg, #1e293b, #0f172a);
       border: 1px solid var(--card-border);
       border-radius: 20px;
@@ -73,8 +74,68 @@
     header p {
       color: var(--text-muted);
       font-size: 1rem;
-      max-width: 600px;
+      max-width: 620px;
       margin: 0 auto;
+    }
+
+    /* Patch Alert Box */
+    .patch-box {
+      background: linear-gradient(145deg, rgba(239, 68, 68, 0.12), rgba(30, 41, 59, 0.95));
+      border: 1px solid rgba(239, 68, 68, 0.45);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 28px;
+      box-shadow: 0 8px 24px rgba(239, 68, 68, 0.08);
+    }
+
+    .patch-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .patch-title {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: #fca5a5;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .patch-tag {
+      background: rgba(239, 68, 68, 0.25);
+      color: #fecaca;
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 2px 10px;
+      border-radius: 999px;
+    }
+
+    .patch-list {
+      list-style: none;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 12px;
+    }
+
+    .patch-item {
+      background: rgba(15, 23, 42, 0.65);
+      border: 1px solid rgba(239, 68, 68, 0.25);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 0.92rem;
+      color: #e2e8f0;
+    }
+
+    .patch-item strong {
+      color: #fca5a5;
+      display: block;
+      margin-bottom: 4px;
     }
 
     /* Section Title */
@@ -127,6 +188,10 @@
     .card p {
       color: var(--text-muted);
       font-size: 0.95rem;
+    }
+
+    .card p strong {
+      color: #f8fafc;
     }
 
     /* Timeline / SOP Steps */
@@ -239,25 +304,47 @@
 
   <div class="container">
     <header>
-      <div class="badge">✦ 實戰開發者內部手冊 · 全設備通用版</div>
+      <div class="badge">✦ 實戰開發者內部手冊 · 防秒爆補丁版</div>
       <h1>Claude 零爆倉「狂刷作戰攻略」</h1>
-      <p>專為 2 小時極速交付設計的額度控水 SOP，不背死板咒語、不觸發 5 小時鎖死，用最低成本維持最高開發產能。</p>
+      <p>專為 2 小時極速交付設計的額度控水 SOP，針對改版後水庫變淺升級防爆機制，不背死板咒語、不觸發 5 小時鎖死。</p>
     </header>
+
+    <!-- 緊急補丁：改版後防秒爆紅燈檢查 -->
+    <section class="patch-box">
+      <div class="patch-header">
+        <div class="patch-title">🚨 改版防秒爆補丁：開工前 10 秒紅燈檢查</div>
+        <span class="patch-tag">防「改兩次就爆倉」必看</span>
+      </div>
+      <ul class="patch-list">
+        <li class="patch-item">
+          <strong>1. 關掉高耗能模式與思考開關</strong>
+          開窗先確認上方模型切回標準主力（如 Sonnet），並關閉「深度思考（Extended Thinking）」與非必要聯網，避免單次推理吃掉 3 倍水庫。
+        </li>
+        <li class="patch-item">
+          <strong>2. 單檔 350 行警戒線＋拆檔止血</strong>
+          單一檔案超過 400 行只要觸發重寫整份 Artifacts，兩輪必爆！開局限制在 350 行內，或將 CSS / JS / HTML 拆開處理。
+        </li>
+        <li class="patch-item">
+          <strong>3. 安全線下修為「3 輪強制換窗」</strong>
+          改版後單次重讀上下文扣款變重，一律執行「開局 1 輪 ＋ 局部微調最多 2 輪 ＝ 滿 3 輪強制帶碼換新窗」。
+        </li>
+      </ul>
+    </section>
 
     <!-- 一、核心控水鐵律 -->
     <h2 class="section-title">🛡️ 一、核心控水三鐵律（守住 5 小時滾動水庫）</h2>
     <div class="grid-3">
       <div class="card">
         <h3>1. 絕不把水庫抽乾</h3>
-        <p>一旦跳出上限鎖死，全帳號強制冷凍 5 小時。感覺聊了 5～8 輪接近上限時，<strong>主動停手留 15% 救命額度</strong>，等視窗滾動補血就能無限循環。</p>
+        <p>一旦跳出上限鎖死，全帳號強制冷凍 5 小時。感覺聊了 2～3 輪或剩餘提示下降時，<strong>主動停手留 20% 救命額度</strong>，等視窗滾動補血就能無限循環。</p>
       </div>
       <div class="card">
-        <h3>2. 開局全生、修改局部</h3>
-        <p>只有新視窗第 1 句讓它吐出完整檔案；<strong>第 2 句起嚴禁重寫整份程式碼</strong>，永遠只貼需要修改的 20～50 行片段。</p>
+        <h3>2. 開局精簡、修改局部</h3>
+        <p>只有新視窗第 1 句吐出精簡骨架（≤350 行）；<strong>第 2 句起嚴禁重寫整份程式碼</strong>，永遠只貼需要修改的 20～40 行片段。</p>
       </div>
       <div class="card">
-        <h3>3. 單一視窗不超過 8 輪</h3>
-        <p>對話越長、重讀歷史的扣款呈等比級數暴增。超過 8 輪就帶走最新程式碼開新視窗，永遠保持最低扣款與最高智商。</p>
+        <h3>3. 單一視窗嚴禁超過 3 輪</h3>
+        <p>對話越長、重讀歷史與 Artifacts 的扣款呈倍數暴增。<strong>滿 3 輪（1 生 ＋ 2 改）就帶走最新程式碼開新視窗</strong>，永遠保持最低扣款。</p>
       </div>
     </div>
 
@@ -266,38 +353,38 @@
     <div class="grid-2">
       <div class="card step-card">
         <div class="step-header">
-          <span class="time-tag">0 ~ 15 分鐘</span>
+          <span class="time-tag">0 ~ 15 分鐘（第 1 輪）</span>
           <span class="cost-tag cost-med">🟡 額度消耗：中等</span>
         </div>
-        <h3>1. 開局定骨架（水庫最滿時）</h3>
-        <p>開新視窗，用 1 句話講清楚需求與欄位結構，讓它一次生成高顏值網頁骨架與完整前後邏輯初版。</p>
+        <h3>1. 開局定精簡骨架（水庫最滿時）</h3>
+        <p>確認關閉思考模式後開新視窗，用 1 句話講清楚需求與欄位結構，要求程式碼精簡無冗長註解，一次生成初版骨架。</p>
       </div>
 
       <div class="card step-card">
         <div class="step-header">
-          <span class="time-tag">15 ~ 60 分鐘</span>
-          <span class="cost-tag cost-low">🟢 額度消耗：極低（省 80%）</span>
+          <span class="time-tag">15 ~ 40 分鐘（第 2～3 輪封頂）</span>
+          <span class="cost-tag cost-low">🟢 額度消耗：低（上限 2 次）</span>
         </div>
-        <h3>2. 局部手術微調</h3>
-        <p>測試發現要改色、改字或調邏輯時，<strong>只複製該區塊（20~50 行）</strong>貼入修改，避免重寫整份檔案，可精修數十次。</p>
+        <h3>2. 局部手術微調（最多 2 刀）</h3>
+        <p>核心邏輯需微調時，<strong>只複製該區塊（20~40 行）</strong>貼入修改，嚴禁展開整份檔案；改滿 2 次立刻存檔撤離該視窗。</p>
       </div>
 
       <div class="card step-card">
         <div class="step-header">
-          <span class="time-tag">60 ~ 90 分鐘</span>
+          <span class="time-tag">40 ~ 90 分鐘（提前接力）</span>
           <span class="cost-tag cost-zero">⚪ 額度消耗：零消耗</span>
         </div>
-        <h3>3. 跨平台分流接力</h3>
-        <p>若需大量修改文案、調整 RWD 細節或反覆除錯，直接把整份貼給 <strong>Gemini</strong> 接力扛下粗活，保住 Claude 額度。</p>
+        <h3>3. 提前跨平台分流接力</h3>
+        <p>第 2 次修改前就把整份貼給 <strong>Gemini</strong> 接力扛下粗活！所有改色、改文案、調 RWD 排版與反覆微調全交給 Gemini 處理。</p>
       </div>
 
       <div class="card step-card">
         <div class="step-header">
-          <span class="time-tag">90 ~ 120 分鐘</span>
+          <span class="time-tag">90 ~ 120 分鐘（開新窗救援）</span>
           <span class="cost-tag cost-low">🟢 額度消耗：低</span>
         </div>
         <h3>4. 關鍵救援一擊必殺</h3>
-        <p>遇到其他 AI 解不掉的 API 報錯或 n8n 解析卡關，動用保留的 Claude 救命額度精準抓蟲，確保準時交貨收款。</p>
+        <p>遇到解不掉的 API 報錯或 n8n 解析卡關，<strong>開全新視窗</strong>動用保留的 Claude 救命額度精準抓蟲，確保準時交貨收款。</p>
       </div>
     </div>
 
@@ -306,25 +393,25 @@
 
     <div class="prompt-card">
       <div class="prompt-top">
-        <span class="prompt-title">1. 【開局全生咒語】新視窗第 1 句專用</span>
+        <span class="prompt-title">1. 【開局全生咒語】新視窗第 1 句專用（含行數防爆限制）</span>
         <button class="copy-btn" onclick="copyPrompt('p1', this)">📋 複製咒語</button>
       </div>
-      <div class="prompt-content" id="p1">我要做一個【專案名稱，例如：LINE 客戶報價單網頁】，需要包含【欄位 A、B、C】與【Webhook 送出功能】。請直接給我一份乾淨、單一檔案的完整 HTML/CSS/JS 程式碼，設計風格要【現代極簡、手機版優先、全設備通用】。</div>
+      <div class="prompt-content" id="p1">我要做一個【專案名稱，例如：客戶報價單網頁】，需要包含【欄位 A、B、C】與【Webhook 送出功能】。請直接給我一份乾淨、單一檔案的完整 HTML/CSS/JS 程式碼，設計風格要【現代極簡、手機版優先、全設備通用】。請保持程式碼精簡（盡量控制在 350 行以內、避免冗長註解），直接輸出程式碼即可。</div>
     </div>
 
     <div class="prompt-card">
       <div class="prompt-top">
-        <span class="prompt-title">2. 【局部手術咒語】第 2 句起修改細節專用（最省水）</span>
+        <span class="prompt-title">2. 【局部手術咒語】第 2～3 輪微調專用（嚴禁重寫整份）</span>
         <button class="copy-btn" onclick="copyPrompt('p2', this)">📋 複製咒語</button>
       </div>
-      <div class="prompt-content" id="p2">請只幫我修改以下這段程式碼，目標是【具體修改需求，例如：把按鈕改成點擊後顯示載入中並鎖定 3 秒】。請只輸出有修改到的程式碼區塊並標註位置，千萬不要重寫整份檔案，未更動部分用 // ...其餘保持不變 省略即可：
+      <div class="prompt-content" id="p2">請只幫我修改以下這段程式碼，目標是【具體修改需求，例如：把按鈕改成點擊後顯示載入中並鎖定 3 秒】。請只輸出有修改到的程式碼區塊並標註位置，千萬不要重寫整份檔案或重新展開完整預覽，未更動部分用 // ...其餘保持不變 省略即可：
 
 [貼上你要改的那 20~40 行程式碼]</div>
     </div>
 
     <div class="prompt-card">
       <div class="prompt-top">
-        <span class="prompt-title">3. 【10 秒無痛換場交接咒語】快爆倉或換 Gemini 前專用</span>
+        <span class="prompt-title">3. 【10 秒無痛換場交接咒語】滿 3 輪或換 Gemini 前專用</span>
         <button class="copy-btn" onclick="copyPrompt('p3', this)">📋 複製咒語</button>
       </div>
       <div class="prompt-content" id="p3">請用 5 句話總結目前系統的架構進度、已完成的變數名稱，以及接下來待修改的重點，方便我直接複製貼給下一位工程師無縫接手。</div>
@@ -335,16 +422,16 @@
     <div class="grid-2">
       <div class="card">
         <h3>🆓 日常免費雙刀流</h3>
-        <p><strong>Claude</strong>（開局生骨架 ＋ 抓大蟲）＋ <strong>Google AI Studio / Gemini</strong>（貼整份檔案無限次微調），一毛錢不花就能穩定交貨。</p>
+        <p><strong>Claude</strong>（開局生骨架 ＋ 開新窗抓大蟲，嚴守 3 輪上限）＋ <strong>Google AI Studio / Gemini</strong>（貼整份檔案無限次改版面與微調），穩定零成本交貨。</p>
       </div>
       <div class="card">
         <h3>💼 商業接案火力全開</h3>
-        <p>接到第一筆 8,999 元訂單後，可開通 <strong>Anthropic Console（API 儲值制）</strong>搭配 Cline 外掛，儲值 10 美金用多少算多少，<strong>完全沒有 5 小時冷卻鎖</strong>。</p>
+        <p>接到訂單後，可開通 <strong>Anthropic Console（API 儲值制）</strong>搭配 Cline 外掛，儲值 10 美金用多少算多少，<strong>完全沒有 5 小時冷卻鎖</strong>。</p>
       </div>
     </div>
 
     <footer>
-      AI 實戰開發 5 步心法 · 零爆倉作戰工具箱 ｜ 專注解決真實痛點，2 小時極速交付
+      AI 實戰開發 5 步心法 · 零爆倉作戰工具箱（防秒爆補丁版） ｜ 專注解決真實痛點，2 小時極速交付
     </footer>
   </div>
 
