@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Claude 零爆倉狂刷作戰攻略｜2小時極速開發 SOP</title>
+  <style>
+    :root {
+      --bg-color: #0f172a;
+      --card-bg: #1e293b;
+      --card-border: #334155;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-glow: rgba(56, 189, 248, 0.15);
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans TC", sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      line-height: 1.6;
+      padding: 20px 16px 60px;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    /* Header */
+    header {
+      text-align: center;
+      padding: 32px 16px;
+      margin-bottom: 32px;
+      background: linear-gradient(145deg, #1e293b, #0f172a);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .badge {
+      display: inline-block;
+      background: var(--accent-glow);
+      color: var(--accent);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      padding: 4px 14px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    h1 {
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 10px;
+      background: linear-gradient(to right, #ffffff, #38bdf8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    header p {
+      color: var(--text-muted);
+      font-size: 1rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* Section Title */
+    .section-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin: 36px 0 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #e2e8f0;
+    }
+
+    /* Grid System */
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+      gap: 16px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 16px;
+    }
+
+    /* Cards */
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 20px;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .card:hover {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    .card h3 {
+      font-size: 1.1rem;
+      margin-bottom: 8px;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    /* Timeline / SOP Steps */
+    .step-card {
+      position: relative;
+      padding-left: 20px;
+      border-left: 4px solid var(--accent);
+    }
+
+    .step-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .time-tag {
+      font-size: 0.8rem;
+      background: rgba(255, 255, 255, 0.08);
+      padding: 2px 10px;
+      border-radius: 6px;
+      color: #cbd5e1;
+    }
+
+    .cost-tag {
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 2px 10px;
+      border-radius: 6px;
+    }
+
+    .cost-med { background: rgba(245, 158, 11, 0.15); color: var(--warning); }
+    .cost-low { background: rgba(16, 185, 129, 0.15); color: var(--success); }
+    .cost-zero { background: rgba(148, 163, 184, 0.15); color: #cbd5e1; }
+
+    /* Prompt Box */
+    .prompt-card {
+      background: #162032;
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+
+    .prompt-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+
+    .prompt-title {
+      font-weight: 700;
+      color: var(--accent);
+      font-size: 1.05rem;
+    }
+
+    .copy-btn {
+      background: var(--accent);
+      color: #0f172a;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.88rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+
+    .copy-btn:hover {
+      background: #7dd3fc;
+    }
+
+    .copy-btn.copied {
+      background: var(--success);
+      color: #fff;
+    }
+
+    .prompt-content {
+      background: #0b1120;
+      border: 1px solid #1e293b;
+      border-radius: 10px;
+      padding: 14px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.9rem;
+      color: #e2e8f0;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      margin-top: 48px;
+      padding-top: 20px;
+      border-top: 1px solid var(--card-border);
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <div class="badge">✦ 實戰開發者內部手冊 · 全設備通用版</div>
+      <h1>Claude 零爆倉「狂刷作戰攻略」</h1>
+      <p>專為 2 小時極速交付設計的額度控水 SOP，不背死板咒語、不觸發 5 小時鎖死，用最低成本維持最高開發產能。</p>
+    </header>
+
+    <!-- 一、核心控水鐵律 -->
+    <h2 class="section-title">🛡️ 一、核心控水三鐵律（守住 5 小時滾動水庫）</h2>
+    <div class="grid-3">
+      <div class="card">
+        <h3>1. 絕不把水庫抽乾</h3>
+        <p>一旦跳出上限鎖死，全帳號強制冷凍 5 小時。感覺聊了 5～8 輪接近上限時，<strong>主動停手留 15% 救命額度</strong>，等視窗滾動補血就能無限循環。</p>
+      </div>
+      <div class="card">
+        <h3>2. 開局全生、修改局部</h3>
+        <p>只有新視窗第 1 句讓它吐出完整檔案；<strong>第 2 句起嚴禁重寫整份程式碼</strong>，永遠只貼需要修改的 20～50 行片段。</p>
+      </div>
+      <div class="card">
+        <h3>3. 單一視窗不超過 8 輪</h3>
+        <p>對話越長、重讀歷史的扣款呈等比級數暴增。超過 8 輪就帶走最新程式碼開新視窗，永遠保持最低扣款與最高智商。</p>
+      </div>
+    </div>
+
+    <!-- 二、四階段極速作戰 SOP -->
+    <h2 class="section-title">⚡ 二、四階段極速作戰 SOP（2 小時交貨節奏）</h2>
+    <div class="grid-2">
+      <div class="card step-card">
+        <div class="step-header">
+          <span class="time-tag">0 ~ 15 分鐘</span>
+          <span class="cost-tag cost-med">🟡 額度消耗：中等</span>
+        </div>
+        <h3>1. 開局定骨架（水庫最滿時）</h3>
+        <p>開新視窗，用 1 句話講清楚需求與欄位結構，讓它一次生成高顏值網頁骨架與完整前後邏輯初版。</p>
+      </div>
+
+      <div class="card step-card">
+        <div class="step-header">
+          <span class="time-tag">15 ~ 60 分鐘</span>
+          <span class="cost-tag cost-low">🟢 額度消耗：極低（省 80%）</span>
+        </div>
+        <h3>2. 局部手術微調</h3>
+        <p>測試發現要改色、改字或調邏輯時，<strong>只複製該區塊（20~50 行）</strong>貼入修改，避免重寫整份檔案，可精修數十次。</p>
+      </div>
+
+      <div class="card step-card">
+        <div class="step-header">
+          <span class="time-tag">60 ~ 90 分鐘</span>
+          <span class="cost-tag cost-zero">⚪ 額度消耗：零消耗</span>
+        </div>
+        <h3>3. 跨平台分流接力</h3>
+        <p>若需大量修改文案、調整 RWD 細節或反覆除錯，直接把整份貼給 <strong>Gemini</strong> 接力扛下粗活，保住 Claude 額度。</p>
+      </div>
+
+      <div class="card step-card">
+        <div class="step-header">
+          <span class="time-tag">90 ~ 120 分鐘</span>
+          <span class="cost-tag cost-low">🟢 額度消耗：低</span>
+        </div>
+        <h3>4. 關鍵救援一擊必殺</h3>
+        <p>遇到其他 AI 解不掉的 API 報錯或 n8n 解析卡關，動用保留的 Claude 救命額度精準抓蟲，確保準時交貨收款。</p>
+      </div>
+    </div>
+
+    <!-- 三、一鍵複製省水咒語 -->
+    <h2 class="section-title">📋 三、必備「省水防爆倉」萬用咒語（點擊一鍵複製）</h2>
+
+    <div class="prompt-card">
+      <div class="prompt-top">
+        <span class="prompt-title">1. 【開局全生咒語】新視窗第 1 句專用</span>
+        <button class="copy-btn" onclick="copyPrompt('p1', this)">📋 複製咒語</button>
+      </div>
+      <div class="prompt-content" id="p1">我要做一個【專案名稱，例如：LINE 客戶報價單網頁】，需要包含【欄位 A、B、C】與【Webhook 送出功能】。請直接給我一份乾淨、單一檔案的完整 HTML/CSS/JS 程式碼，設計風格要【現代極簡、手機版優先、全設備通用】。</div>
+    </div>
+
+    <div class="prompt-card">
+      <div class="prompt-top">
+        <span class="prompt-title">2. 【局部手術咒語】第 2 句起修改細節專用（最省水）</span>
+        <button class="copy-btn" onclick="copyPrompt('p2', this)">📋 複製咒語</button>
+      </div>
+      <div class="prompt-content" id="p2">請只幫我修改以下這段程式碼，目標是【具體修改需求，例如：把按鈕改成點擊後顯示載入中並鎖定 3 秒】。請只輸出有修改到的程式碼區塊並標註位置，千萬不要重寫整份檔案，未更動部分用 // ...其餘保持不變 省略即可：
+
+[貼上你要改的那 20~40 行程式碼]</div>
+    </div>
+
+    <div class="prompt-card">
+      <div class="prompt-top">
+        <span class="prompt-title">3. 【10 秒無痛換場交接咒語】快爆倉或換 Gemini 前專用</span>
+        <button class="copy-btn" onclick="copyPrompt('p3', this)">📋 複製咒語</button>
+      </div>
+      <div class="prompt-content" id="p3">請用 5 句話總結目前系統的架構進度、已完成的變數名稱，以及接下來待修改的重點，方便我直接複製貼給下一位工程師無縫接手。</div>
+    </div>
+
+    <!-- 四、緊急備援陣型 -->
+    <h2 class="section-title">🚀 四、緊急防卡關備援陣型</h2>
+    <div class="grid-2">
+      <div class="card">
+        <h3>🆓 日常免費雙刀流</h3>
+        <p><strong>Claude</strong>（開局生骨架 ＋ 抓大蟲）＋ <strong>Google AI Studio / Gemini</strong>（貼整份檔案無限次微調），一毛錢不花就能穩定交貨。</p>
+      </div>
+      <div class="card">
+        <h3>💼 商業接案火力全開</h3>
+        <p>接到第一筆 8,999 元訂單後，可開通 <strong>Anthropic Console（API 儲值制）</strong>搭配 Cline 外掛，儲值 10 美金用多少算多少，<strong>完全沒有 5 小時冷卻鎖</strong>。</p>
+      </div>
+    </div>
+
+    <footer>
+      AI 實戰開發 5 步心法 · 零爆倉作戰工具箱 ｜ 專注解決真實痛點，2 小時極速交付
+    </footer>
+  </div>
+
+  <script>
+    function copyPrompt(elementId, btn) {
+      const text = document.getElementById(elementId).innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '✅ 已複製！';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.innerHTML = originalText;
+          btn.classList.remove('copied');
+        }, 2000);
+      }).catch(err => {
+        alert('複製失敗，請手動選取文字複製');
+      });
+    }
+  </script>
+</body>
+</html>
